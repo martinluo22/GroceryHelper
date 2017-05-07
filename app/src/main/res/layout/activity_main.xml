@@ -15,4 +15,41 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/main_toolbar"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/recurring_button"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/recurring_button"
+            />
+
+    <EditText
+        android:id="@+id/newItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inputType="textAutoCorrect"
+        android:singleLine="true"
+        android:layout_weight="1"
+        android:hint= "@string/new_item"
+        android:imeOptions="actionDone"/>
+
+
+
+        <ImageButton
+            android:id="@+id/enter_button"
+            android:layout_height="match_parent"
+            android:layout_width="45dp"
+            android:src="@drawable/ic_add_black_24dp"
+            android:background="@drawable/round_button"
+            />
+    </LinearLayout>
+
 </RelativeLayout>

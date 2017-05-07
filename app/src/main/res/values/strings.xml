@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GroceryHelper</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_item">Enter new Item</string>
+    <string name="recurring_button">Recurring</string>
+    <string name="enter_item">Enter</string>
 </resources>
