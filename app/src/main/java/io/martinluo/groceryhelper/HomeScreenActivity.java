@@ -3,6 +3,7 @@ package io.martinluo.groceryhelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class HomeScreenActivity extends AppCompatActivity {
 
     private static boolean isItemRecurring = false;
+
+    private List<GroceryItem> groceryItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,9 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         setupButtonListeners();
 
+        if (groceryItemList == null){
+            groceryItemList = new LinkedList<>();
+        }
 
     }
 
@@ -46,15 +55,14 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void setupButtonListeners(){
 
-        final EditText editText = (EditText) findViewById(R.id.newItem);
+        final EditText editText = (EditText) findViewById(R.id.item_editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     addNewItem(isItemRecurring);
-
+                    editText.clearFocus();
                     handled = true;
                 }
                 return handled;
@@ -72,6 +80,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         recurringButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 isItemRecurring = !isItemRecurring;
+
+                /*
+                for(int i=0;i<groceryItemList.size();i++){
+                    Log.d("list item" ,groceryItemList.get(i).getItem().toString());
+                }
+                */
+
                 return;
             }
         });
@@ -80,7 +95,21 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void addNewItem(Boolean isRecurring){
 
+        EditText editText = (EditText)findViewById(R.id.item_editText);
+        String tmp = editText.getText().toString();
+
+        if (tmp.matches("")){
+            editText.setError("Empty Item");
+        }
+
+        GroceryItem groceryItem = new GroceryItem(tmp, isRecurring);
+        groceryItemList.add(groceryItem);
+
+
+
+        editText.setText("");
     }
+
 
 
 
