@@ -18,8 +18,10 @@ public class GroceryItemAdapter extends BaseAdapter {
     List<GroceryItem> groceryItems;
     Context context;
 
-    public GroceryItemAdapter(Context context){
+    public GroceryItemAdapter(Context context, List<GroceryItem> groceryItems){
+
         this.context = context;
+        this.groceryItems = groceryItems;
     }
 
 
@@ -55,8 +57,14 @@ public class GroceryItemAdapter extends BaseAdapter {
     }
 
 
-    public void addItems(GroceryItem tmp){
+    public void update(GroceryItem tmp) {
         groceryItems.add(tmp);
+        notifyDataSetChanged();
+    }
+
+    public void update(List<GroceryItem> groceryList){
+        groceryItems.clear();
+        groceryItems = groceryList;
         notifyDataSetChanged();
     }
 
