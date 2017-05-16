@@ -47,10 +47,10 @@ public class GroceryItemAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null){
-            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
+            convertView = inflater.inflate(R.id.list_layout, null);
         }
 
-        TextView textView =  (TextView) convertView.findViewById(android.R.id.text1);
+        TextView textView =  (TextView) convertView.findViewById(R.id.text);
         textView.setText(groceryItems.get(position).getItem());
 
         return convertView;
