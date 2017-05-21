@@ -44,13 +44,13 @@ public class GroceryItemAdapter extends BaseAdapter {
     @Override
     public View getView (int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null){
-            convertView = inflater.inflate(R.id.list_layout, null);
+            convertView = inflater.inflate(R.layout.listlayout, null);
         }
 
-        TextView textView =  (TextView) convertView.findViewById(R.id.text);
+        TextView textView =  (TextView) convertView.findViewById(R.id.textBox);
         textView.setText(groceryItems.get(position).getItem());
 
         return convertView;
