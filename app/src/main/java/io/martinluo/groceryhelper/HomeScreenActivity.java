@@ -82,7 +82,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         final ImageButton enterButton = (ImageButton) findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 addNewItem(isItemRecurring);
             }
         });
@@ -91,11 +90,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         recurringButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 isItemRecurring = !isItemRecurring;
-
-
-                for(int i=0;i<groceryItemList.size();i++){
-                    Log.d("list item" ,groceryItemList.get(i).getItem().toString());
-                }
 
                 return;
             }
@@ -123,7 +117,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         final ListView listview = (ListView) findViewById(R.id.main_list_view);
         listview.setAdapter(adapter);
-
 
     }
 
