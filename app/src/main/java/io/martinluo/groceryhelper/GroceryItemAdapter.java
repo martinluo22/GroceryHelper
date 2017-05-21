@@ -2,7 +2,9 @@ package io.martinluo.groceryhelper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,9 +62,15 @@ public class GroceryItemAdapter extends BaseAdapter {
             textView = (TextView) convertView.getTag(R.id.textBox);
         }
 
-        textView.setText(groceryItems.get(position).getItem());
-        textView.setTextColor(Color.parseColor("#bdbdbd"));
+        GroceryItem currItem = groceryItems.get(position);
+        textView.setText(currItem.getItem());
 
+        if (currItem.isRecurring()){
+            textView.setTextColor(Color.parseColor("#000000"));
+        }
+        else {
+            textView.setTextColor(ContextCompat.getColor(context, R.color.groceryGreenDark));
+        }
 
         return convertView;
     }
@@ -70,7 +78,7 @@ public class GroceryItemAdapter extends BaseAdapter {
 
     public void update(GroceryItem tmp) {
 
-        groceryItems.add(tmp);
+        groceryItems.add(0, tmp);
         notifyDataSetChanged();
     }
 

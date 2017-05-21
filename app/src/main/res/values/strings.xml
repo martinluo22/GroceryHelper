@@ -4,4 +4,5 @@
     <string name="new_item">Enter new Item</string>
     <string name="recurring_button">Recurring</string>
     <string name="enter_item">Enter</string>
+    <string name="list_view_title">Current List:</string>
 </resources>
