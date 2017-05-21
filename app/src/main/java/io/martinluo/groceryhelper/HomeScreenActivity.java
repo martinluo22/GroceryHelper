@@ -1,5 +1,7 @@
 package io.martinluo.groceryhelper;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,8 +10,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -61,6 +65,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void setupButtonListeners(){
 
+
         final EditText editText = (EditText) findViewById(R.id.item_editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -68,7 +73,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     addNewItem(isItemRecurring);
-                    editText.clearFocus();
                     handled = true;
                 }
                 return handled;
@@ -123,7 +127,23 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     }
 
-
+    //Remove focus from textbox when user touches outside
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
 
 
 }
