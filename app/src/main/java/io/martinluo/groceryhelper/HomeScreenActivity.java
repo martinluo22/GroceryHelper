@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -25,6 +26,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private List<GroceryItem> groceryItemList;
 
+    private GroceryItemAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +36,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
-        setupButtonListeners();
-
         if (groceryItemList == null){
             groceryItemList = new LinkedList<>();
         }
 
+        adapter = new GroceryItemAdapter (this.getApplicationContext(), groceryItemList);
+
+        setUpListView();
+
+        setupButtonListeners();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,6 +78,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         final ImageButton enterButton = (ImageButton) findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 addNewItem(isItemRecurring);
             }
         });
@@ -81,11 +88,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isItemRecurring = !isItemRecurring;
 
-                /*
+
                 for(int i=0;i<groceryItemList.size();i++){
                     Log.d("list item" ,groceryItemList.get(i).getItem().toString());
                 }
-                */
 
                 return;
             }
@@ -104,10 +110,17 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         GroceryItem groceryItem = new GroceryItem(tmp, isRecurring);
         groceryItemList.add(groceryItem);
-
-
+        adapter.update(groceryItem);
 
         editText.setText("");
+    }
+
+    public void setUpListView(){
+
+        final ListView listview = (ListView) findViewById(R.id.main_list_view);
+        listview.setAdapter(adapter);
+
+
     }
 
 

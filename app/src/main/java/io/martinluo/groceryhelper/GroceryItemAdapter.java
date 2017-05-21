@@ -1,8 +1,12 @@
 package io.martinluo.groceryhelper;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -12,6 +16,13 @@ import java.util.List;
 public class GroceryItemAdapter extends BaseAdapter {
 
     List<GroceryItem> groceryItems;
+    Context context;
+
+    public GroceryItemAdapter(Context context, List<GroceryItem> groceryItems){
+
+        this.context = context;
+        this.groceryItems = groceryItems;
+    }
 
 
     @Override
@@ -29,15 +40,31 @@ public class GroceryItemAdapter extends BaseAdapter {
         return position;
     }
 
-    /*
+
     @Override
     public View getView (int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (convertView == null){
+            convertView = inflater.inflate(R.layout.listlayout, null);
+        }
+
+        TextView textView =  (TextView) convertView.findViewById(R.id.textBox);
+        textView.setText(groceryItems.get(position).getItem());
+
+        return convertView;
     }
-    */
 
 
-    public void addItems(GroceryItem tmp){
+    public void update(GroceryItem tmp) {
         groceryItems.add(tmp);
+        notifyDataSetChanged();
+    }
+
+    public void update(List<GroceryItem> groceryList){
+        groceryItems.clear();
+        groceryItems = groceryList;
         notifyDataSetChanged();
     }
 

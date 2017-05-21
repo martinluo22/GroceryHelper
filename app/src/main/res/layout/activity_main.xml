@@ -16,6 +16,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <LinearLayout
+        android:id="@+id/input_ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
@@ -51,5 +52,14 @@
             android:background="@drawable/round_button"
             />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/main_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/input_ll"
+        />
 
 </RelativeLayout>
