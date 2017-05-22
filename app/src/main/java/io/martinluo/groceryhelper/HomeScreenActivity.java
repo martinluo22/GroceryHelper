@@ -1,12 +1,12 @@
 package io.martinluo.groceryhelper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,16 +16,17 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.LinkedList;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -50,14 +51,20 @@ public class HomeScreenActivity extends AppCompatActivity {
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
-        if (groceryItemList == null){
-            groceryItemList = new LinkedList<>();
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<GroceryItem>>(){}.getType();
+        String json = prefs.getString(getString(R.string.saved_grocery_list), "");
+        List<GroceryItem> tmpList = gson.fromJson(json, type);
+
+        groceryItemList = new ArrayList<>();
+
+        if (tmpList != null){
+            groceryItemList.addAll(tmpList);
         }
 
         adapter = new GroceryItemAdapter (context, groceryItemList);
-
         setUpListView();
-
         setupButtonListeners();
     }
 
@@ -84,6 +91,20 @@ public class HomeScreenActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(groceryItemList);
+
+        editor.putString(getString(R.string.saved_grocery_list), json);
+        editor.commit();
     }
 
     public void setupButtonListeners(){
@@ -120,8 +141,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
 
     }
@@ -167,6 +186,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent( event );
     }
+
 
 
 }
