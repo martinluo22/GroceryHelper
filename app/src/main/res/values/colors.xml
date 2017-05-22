@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDarker">#060003</color>
     <color name="colorAccent">#FF4081</color>
     <color name="groceryGreenDark">#009400</color>
     <color name="groceryGreenLight">#00d600</color>
+    <color name = "groceryBrownLight">#996600</color>
 </resources>

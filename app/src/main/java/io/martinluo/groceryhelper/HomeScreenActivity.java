@@ -2,6 +2,7 @@ package io.martinluo.groceryhelper;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,10 +16,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -26,7 +29,13 @@ import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    private static boolean isItemRecurring = false;
+    private Context context;
+
+    private boolean isRecurring = false;
+
+    private EditText editText;
+
+    private Button recurringButton;
 
     private List<GroceryItem> groceryItemList;
 
@@ -35,6 +44,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.context = this.getApplicationContext();
         setContentView(R.layout.activity_main);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -44,7 +54,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             groceryItemList = new LinkedList<>();
         }
 
-        adapter = new GroceryItemAdapter (this.getApplicationContext(), groceryItemList);
+        adapter = new GroceryItemAdapter (context, groceryItemList);
 
         setUpListView();
 
@@ -63,16 +73,28 @@ public class HomeScreenActivity extends AppCompatActivity {
         // All other menu item clicks are handled by onOptionsItemSelected()
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_clear_list:
+                adapter.clearAll();
+                groceryItemList.clear();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void setupButtonListeners(){
 
-
-        final EditText editText = (EditText) findViewById(R.id.item_editText);
+        editText = (EditText) findViewById(R.id.item_editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    addNewItem(isItemRecurring);
+                    addNewItem();
                     handled = true;
                 }
                 return handled;
@@ -82,24 +104,29 @@ public class HomeScreenActivity extends AppCompatActivity {
         final ImageButton enterButton = (ImageButton) findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                addNewItem(isItemRecurring);
+                addNewItem();
             }
         });
 
-        final Button recurringButton = (Button) findViewById(R.id.recurring_button);
+        recurringButton = (Button) findViewById(R.id.recurring_button);
         recurringButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                isItemRecurring = !isItemRecurring;
-
-                return;
+                isRecurring = !isRecurring;
+                if (isRecurring) {
+                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.groceryGreenDark));
+                }
+                else{
+                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
+                }
             }
         });
+
+
+
 
     }
 
-    public void addNewItem(Boolean isRecurring){
-
-        EditText editText = (EditText)findViewById(R.id.item_editText);
+    public void addNewItem(){
         String tmp = editText.getText().toString();
 
         if (tmp.matches("")){
@@ -128,6 +155,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             if ( v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
+                Rect recRect = new Rect();
+                recurringButton.getHitRect(recRect);
+                outRect.union(recRect);
                 if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -66,10 +66,10 @@ public class GroceryItemAdapter extends BaseAdapter {
         textView.setText(currItem.getItem());
 
         if (currItem.isRecurring()){
-            textView.setTextColor(Color.parseColor("#000000"));
+            textView.setTextColor(ContextCompat.getColor(context, R.color.groceryGreenDark));
         }
         else {
-            textView.setTextColor(ContextCompat.getColor(context, R.color.groceryGreenDark));
+            textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
         }
 
         return convertView;
@@ -88,5 +88,9 @@ public class GroceryItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clearAll(){
+        groceryItems.clear();
+        notifyDataSetChanged();
+    }
 
 }

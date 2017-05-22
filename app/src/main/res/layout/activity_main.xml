@@ -24,6 +24,7 @@
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
         android:layout_below="@id/main_toolbar"
         android:orientation="horizontal">
 
@@ -32,6 +33,7 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/recurring_button"
+            android:textColor="@color/colorPrimaryDarker"
             />
 
     <EditText
@@ -52,19 +54,13 @@
             android:background="@drawable/round_button"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView" />
-
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/input_ll"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="100dp">
+        android:layout_margin="@dimen/activity_horizontal_margin">
         
         <TextView
             android:id="@+id/listTitle"
