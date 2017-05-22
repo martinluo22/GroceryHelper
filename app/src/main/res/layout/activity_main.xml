@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeScreenActivity">
+    tools:context=".HomeScreenActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/groceryGreen"
+        android:background="@color/groceryGreenDark"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -19,9 +21,10 @@
         android:id="@+id/input_ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="30dp"
         android:layout_below="@id/main_toolbar"
         android:orientation="horizontal">
 
@@ -30,6 +33,7 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/recurring_button"
+            android:textColor="@color/colorPrimaryDarker"
             />
 
     <EditText
@@ -42,24 +46,41 @@
         android:hint= "@string/new_item"
         android:imeOptions="actionDone"/>
 
-
-
         <ImageButton
             android:id="@+id/enter_button"
             android:layout_height="match_parent"
-            android:layout_width="45dp"
+            android:layout_width="50dp"
             android:src="@drawable/ic_add_black_24dp"
             android:background="@drawable/round_button"
             />
+
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/main_list_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_below="@+id/input_ll"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+        
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/list_view_title"
+            android:textSize="@dimen/list_text_size"
+            android:textColor="@color/groceryGreenDark"/>
+        
+    <ListView
+        android:id="@+id/main_list_view"
+        android:layout_below="@+id/listTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="50dp"
         />
+
+    </RelativeLayout>
 
 </RelativeLayout>
