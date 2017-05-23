@@ -1,9 +1,11 @@
 package io.martinluo.groceryhelper;
 
+import java.io.Serializable;
+
 /**
  * Created by martinluo on 2017-05-07.
  */
-public class GroceryItem {
+public class GroceryItem implements Serializable {
 
     private String item;
 

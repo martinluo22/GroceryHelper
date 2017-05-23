@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public class GroceryItemAdapter extends BaseAdapter {
     public GroceryItemAdapter(Context context, List<GroceryItem> groceryItems){
 
         this.context = context;
-        this.groceryItems = new LinkedList<>(groceryItems);
+        this.groceryItems = new ArrayList<>(groceryItems);
     }
 
 

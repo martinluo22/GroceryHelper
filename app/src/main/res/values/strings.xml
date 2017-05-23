@@ -6,4 +6,8 @@
     <string name="recurring_button">Recurring</string>
     <string name="enter_item">Enter</string>
     <string name="list_view_title">Current List:</string>
+
+    <!-- Shared Pref -->
+    <string name="preference_file_key">io.martinluo.groceryhelper.PREFERENCE_FILE_KEY</string>
+    <string name="saved_grocery_list">SAVED_LIST</string>
 </resources>
