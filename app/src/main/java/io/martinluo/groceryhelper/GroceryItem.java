@@ -7,17 +7,17 @@ import java.io.Serializable;
  */
 public class GroceryItem implements Serializable {
 
-    private String item;
+    private String mItem;
 
     private boolean isRecurring;
 
     public GroceryItem(String item, boolean isRecurring){
-        this.item = item;
+        this.mItem = item;
         this.isRecurring = isRecurring;
     }
 
     public String getItem() {
-        return item;
+        return mItem;
     }
 
     public boolean isRecurring() {

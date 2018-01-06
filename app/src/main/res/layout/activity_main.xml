@@ -73,14 +73,12 @@
             android:textSize="@dimen/list_text_size"
             android:textColor="@color/groceryGreenDark"/>
         
-    <ListView
-        android:id="@+id/main_list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_recycler_view"
         android:layout_below="@+id/listTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginBottom="50dp"
         />
 

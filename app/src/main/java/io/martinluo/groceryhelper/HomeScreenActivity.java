@@ -6,6 +6,8 @@ import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -18,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Type;
@@ -34,13 +35,14 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private boolean isRecurring = false;
 
-    private EditText editText;
-
+    private EditText mItemInput;
     private Button recurringButton;
 
-    private List<GroceryItem> groceryItemList;
+    private List<GroceryItem> mGroceryItemList;
 
-    private GroceryItemAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +59,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         String json = prefs.getString(getString(R.string.saved_grocery_list), "");
         List<GroceryItem> tmpList = gson.fromJson(json, type);
 
-        groceryItemList = new ArrayList<>();
+        mGroceryItemList = new ArrayList<>();
 
         if (tmpList != null){
-            groceryItemList.addAll(tmpList);
+            mGroceryItemList.addAll(tmpList);
         }
 
-        adapter = new GroceryItemAdapter (context, groceryItemList);
         setUpListView();
         setupButtonListeners();
     }
@@ -85,8 +86,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_clear_list:
-                adapter.clearAll();
-                groceryItemList.clear();
+                mGroceryItemList.clear();
+                mAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,7 +102,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();
-        String json = gson.toJson(groceryItemList);
+        String json = gson.toJson(mGroceryItemList);
 
         editor.putString(getString(R.string.saved_grocery_list), json);
         editor.commit();
@@ -109,8 +110,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void setupButtonListeners(){
 
-        editText = (EditText) findViewById(R.id.item_editText);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mItemInput = findViewById(R.id.item_editText);
+        mItemInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
@@ -146,24 +147,30 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void addNewItem(){
-        String tmp = editText.getText().toString();
+        String tmp = mItemInput.getText().toString();
 
         if (tmp.matches("")){
-            editText.setError("Empty Item");
+            mItemInput.setError("Empty Item");
         }
 
         GroceryItem groceryItem = new GroceryItem(tmp, isRecurring);
-        groceryItemList.add(groceryItem);
-        adapter.update(groceryItem);
+        mGroceryItemList.add(groceryItem);
+        mAdapter.notifyItemInserted(mGroceryItemList.size() - 1);
 
-        editText.setText("");
+        mItemInput.setText("");
     }
 
     public void setUpListView(){
+        mRecyclerView = findViewById(R.id.main_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
-        final ListView listview = (ListView) findViewById(R.id.main_list_view);
-        listview.setAdapter(adapter);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
+        // specify an adapter (see also next example)
+        mAdapter = new GroceryListAdapter(context, mGroceryItemList);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     //Remove focus from textbox when user touches outside
