@@ -6,9 +6,11 @@ import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -123,27 +126,25 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-        final ImageButton enterButton = (ImageButton) findViewById(R.id.enter_button);
+        final ImageButton enterButton = findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addNewItem();
             }
         });
 
-        recurringButton = (Button) findViewById(R.id.recurring_button);
+        recurringButton = findViewById(R.id.recurring_button);
         recurringButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 isRecurring = !isRecurring;
                 if (isRecurring) {
-                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.groceryGreenDark));
+                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.grocery_green_dark));
                 }
                 else{
                     recurringButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
                 }
             }
         });
-
-
     }
 
     public void addNewItem(){
@@ -151,6 +152,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         if (tmp.matches("")){
             mItemInput.setError("Empty Item");
+            return;
         }
 
         GroceryItem groceryItem = new GroceryItem(tmp, isRecurring);
@@ -171,6 +173,41 @@ public class HomeScreenActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new GroceryListAdapter(context, mGroceryItemList);
         mRecyclerView.setAdapter(mAdapter);
+
+        //Create dividers between list items
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context,
+                DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        //Enable swipe to delete and drag to rearrange
+
+        ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                if (viewHolder.getAdapterPosition() < target.getAdapterPosition()) {
+                    for (int i = fromPosition; i < toPosition; i++) {
+                        Collections.swap(mGroceryItemList, i, i + 1);
+                    }
+                } else {
+                    for (int i = fromPosition; i > toPosition; i--) {
+                        Collections.swap(mGroceryItemList, i, i - 1);
+                    }
+                }
+                mAdapter.notifyItemMoved(fromPosition, toPosition);
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                mGroceryItemList.remove(viewHolder.getAdapterPosition());
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            }
+        });
+        mIth.attachToRecyclerView(mRecyclerView);
     }
 
     //Remove focus from textbox when user touches outside
@@ -178,22 +215,20 @@ public class HomeScreenActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 Rect recRect = new Rect();
                 recurringButton.getHitRect(recRect);
                 outRect.union(recRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
-
-
-
 }
+

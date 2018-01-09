@@ -4,7 +4,13 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimaryDarker">#060003</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="groceryGreenDark">#009400</color>
-    <color name="groceryGreenLight">#00d600</color>
+
+    <!-- App specific colors -->
+    <color name="grocery_green">#4CAF50</color>
+    <color name="grocery_white">#E8F5E9</color>
+    <color name="grocery_green_dark">#2E7D32</color>
+    <color name="pop_out_green">#00E676</color>
+
     <color name = "groceryBrownLight">#996600</color>
+    <color name = "white">#FFFFFF</color>
 </resources>

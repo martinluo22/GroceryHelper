@@ -3,8 +3,8 @@
     <item android:state_pressed="true" >
         <shape>
             <gradient
-                android:startColor="@color/groceryGreenLight"
-                android:endColor="@color/groceryGreenLight"
+                android:startColor="@color/grocery_green"
+                android:endColor="@color/grocery_green"
                 android:angle="270" />
             <stroke
                 android:width="0dp"
@@ -22,8 +22,8 @@
     <item android:state_focused="true" >
         <shape>
             <gradient
-                android:endColor="@color/groceryGreenLight"
-                android:startColor="@color/groceryGreenLight"
+                android:endColor="@color/grocery_green"
+                android:startColor="@color/grocery_green"
                 android:angle="270" />
             <stroke
                 android:width="0dp"
