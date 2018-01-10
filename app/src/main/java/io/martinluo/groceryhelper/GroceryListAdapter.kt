@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.listlayout.view.*
  * Created by martinluo on 2018-01-05.
  */
 
-class GroceryListAdapter(private val context: Context, private val groceryItems: MutableList<GroceryItem>) : RecyclerView.Adapter<GroceryListAdapter.ViewHolder>() {
+class GroceryListAdapter(private val context: Context, private val groceryItems: MutableList<GroceryItem>) :
+        RecyclerView.Adapter<GroceryListAdapter.ViewHolder>() {
+
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val itemTextView = view.textBox
     }

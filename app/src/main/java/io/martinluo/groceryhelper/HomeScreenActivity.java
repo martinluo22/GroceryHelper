@@ -146,6 +146,26 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button doneButton = findViewById(R.id.done_button);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGroceryItemList.size() == 0){
+                    return;
+                }
+
+                List<GroceryItem> savedList = new ArrayList<>(mGroceryItemList);
+                List<GroceryItem> toBeDeleted = new ArrayList<>();
+                for (GroceryItem currentItem : mGroceryItemList){
+                    if (!currentItem.isRecurring()){
+                        toBeDeleted.add(currentItem);
+                    }
+                }
+                mGroceryItemList.removeAll(toBeDeleted);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void addNewItem(){
