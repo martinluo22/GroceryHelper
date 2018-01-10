@@ -3,6 +3,7 @@ package io.martinluo.groceryhelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -202,7 +203,21 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int adapterPosition = viewHolder.getAdapterPosition();
+                final GroceryItem item = mGroceryItemList.get(adapterPosition);
+                Snackbar snackbar = Snackbar
+                        .make(mRecyclerView, "Item Removed", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mGroceryItemList.add(adapterPosition, item);
+                                mAdapter.notifyItemInserted(adapterPosition);
+                                mRecyclerView.scrollToPosition(adapterPosition);
+                            }
+                        })
+                        .setActionTextColor(ContextCompat.getColor(context, R.color.done_button));
+                snackbar.show();
                 mGroceryItemList.remove(viewHolder.getAdapterPosition());
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }

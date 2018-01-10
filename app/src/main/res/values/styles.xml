@@ -9,7 +9,7 @@
     </style>
 
     <style name="AppTheme.DoneButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">#FDD835</item>
+        <item name="colorButtonNormal">@color/done_button</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
