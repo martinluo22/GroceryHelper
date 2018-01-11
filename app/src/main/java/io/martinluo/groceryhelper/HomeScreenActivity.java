@@ -40,7 +40,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private boolean isRecurring = false;
 
     private EditText mItemInput;
-    private Button recurringButton;
+    private Button mRecurringButton;
 
     private List<GroceryItem> mGroceryItemList;
 
@@ -54,7 +54,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         this.context = this.getApplicationContext();
         setContentView(R.layout.activity_main);
 
-        Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -109,7 +109,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         String json = gson.toJson(mGroceryItemList);
 
         editor.putString(getString(R.string.saved_grocery_list), json);
-        editor.commit();
+        editor.apply();
     }
 
     public void setupButtonListeners(){
@@ -134,15 +134,15 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-        recurringButton = findViewById(R.id.recurring_button);
-        recurringButton.setOnClickListener(new View.OnClickListener() {
+        mRecurringButton = findViewById(R.id.recurring_button);
+        mRecurringButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 isRecurring = !isRecurring;
                 if (isRecurring) {
-                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.grocery_green_dark));
+                    mRecurringButton.setTextColor(ContextCompat.getColor(context, R.color.grocery_green_dark));
                 }
                 else{
-                    recurringButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
+                    mRecurringButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
                 }
             }
         });
@@ -254,7 +254,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 Rect recRect = new Rect();
-                recurringButton.getHitRect(recRect);
+                mRecurringButton.getHitRect(recRect);
                 outRect.union(recRect);
                 if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
